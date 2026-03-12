@@ -1,28 +1,26 @@
-// src/app/api/projects/[id]/route.ts
-// PUT    /api/projects/:id  → update a project (admin only)
-// DELETE /api/projects/:id  → delete a project (admin only)
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
+
+export async function PUT(request: NextRequest, context: RouteContext) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { id } = await context.params;
+
   try {
     const body = await request.json();
-
     const techStack = body.techStack
       ? body.techStack.split(",").map((t: string) => t.trim()).filter(Boolean)
       : [];
 
     const project = await prisma.project.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: body.title,
         description: body.description,
@@ -42,15 +40,14 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { id } = await context.params;
+
   try {
-    await prisma.project.delete({ where: { id: params.id } });
+    await prisma.project.delete({ where: { id } });
     return NextResponse.json({ message: "Project deleted!" });
   } catch (error) {
     console.error(error);
