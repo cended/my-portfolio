@@ -72,7 +72,7 @@ export default function Hero() {
         {/* Social Links */}
         <div className="flex items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
           <a
-            href="https://github.com"
+            href="https://github.com/cended"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 glass rounded-xl text-slate-400 hover:text-white hover:border-white/20 transition-all duration-200 hover:-translate-y-0.5"
@@ -81,7 +81,7 @@ export default function Hero() {
             <Github size={20} />
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://linkedin.com/in/alced-jhon-madiales"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 glass rounded-xl text-slate-400 hover:text-white hover:border-white/20 transition-all duration-200 hover:-translate-y-0.5"
