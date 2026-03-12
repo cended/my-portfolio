@@ -6,10 +6,13 @@ import { Github, Linkedin, Mail, ArrowDown, ExternalLink } from "lucide-react";
 
 export default function Hero() {
   const [visible, setVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 100);
-    return () => clearTimeout(t);
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll);
+    return () => { clearTimeout(t); window.removeEventListener("scroll", onScroll); };
   }, []);
 
   const fade = (delay: string) => ({
@@ -93,8 +96,11 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 animate-bounce z-10">
+      {/* Scroll indicator — fades out on scroll */}
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 animate-bounce z-10 transition-opacity duration-500"
+        style={{ opacity: scrolled ? 0 : 1, pointerEvents: "none" }}
+      >
         <ArrowDown size={18} />
         <span className="text-xs font-mono tracking-widest">scroll</span>
       </div>
