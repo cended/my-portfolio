@@ -49,12 +49,6 @@ export default function Hero() {
           Hi, I&apos;m <span className="text-gradient">Alced</span>
         </h1>
 
-        {/* Name */}
-        <h1 style={fade("0.3s")} className="font-display font-extrabold text-6xl md:text-8xl lg:text-9xl text-white leading-none tracking-tight mb-6">
-          Alced
-          <span className="text-gradient">.</span>
-        </h1>
-
         {/* Role */}
         <p style={fade("0.45s")} className="font-display text-xl md:text-2xl text-slate-400 font-medium mb-4">
           Full Stack Web Developer
