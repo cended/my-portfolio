@@ -33,9 +33,9 @@ export default function Hero() {
 
         {/* Main heading */}
         <h1 className="font-display font-extrabold text-5xl md:text-7xl lg:text-8xl text-white leading-none tracking-tight mb-6 animate-fade-up">
-          Alced Jhon
+          cended
           <br />
-          <span className="text-gradient">Madiales</span>
+          <span className="text-gradient">.dev</span>
         </h1>
 
         {/* Sub-heading / role */}
@@ -100,9 +100,9 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 animate-bounce z-10">
         <ArrowDown size={18} />
-        <span className="text-xs font-mono">scroll</span>
+        <span className="text-xs font-mono tracking-widest">scroll</span>
       </div>
     </div>
   );
