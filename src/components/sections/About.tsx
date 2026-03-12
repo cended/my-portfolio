@@ -56,7 +56,7 @@ export default function About() {
             {/* Quick facts */}
             <div className="grid grid-cols-2 gap-4 pt-4">
               {[
-                { label: "Projects", value: "5+" },
+                { label: "Projects", value: "3" },
                 { label: "Technologies", value: "8+" },
                 { label: "Languages", value: "English, Filipino" },
                 { label: "Location", value: "Zamboanga City" },
