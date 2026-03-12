@@ -44,12 +44,10 @@ export default function Hero() {
           Available for opportunities
         </div>
 
-        {/* Greeting */}
-        <div style={fade("0.15s")} className="mb-2">
-          <span className="font-mono text-slate-500 text-lg md:text-xl tracking-widest">
-            Hi, I&apos;m
-          </span>
-        </div>
+        {/* Greeting + Name — single line */}
+        <h1 style={fade("0.15s")} className="font-mono font-bold text-4xl md:text-5xl text-white tracking-tight mb-6">
+          Hi, I&apos;m <span className="text-gradient">Alced</span>
+        </h1>
 
         {/* Name */}
         <h1 style={fade("0.3s")} className="font-display font-extrabold text-6xl md:text-8xl lg:text-9xl text-white leading-none tracking-tight mb-6">
