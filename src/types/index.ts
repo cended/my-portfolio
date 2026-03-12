@@ -5,14 +5,20 @@
 // -------------------------------------------------------
 // Project type — matches the Prisma schema exactly
 // -------------------------------------------------------
+// src/types/index.ts
+// All TypeScript interfaces for the project.
+
+// -------------------------------------------------------
+// Project type — matches the Prisma schema exactly
+// -------------------------------------------------------
 export interface Project {
   id: string;
   title: string;
   description: string;
   techStack: string[];
+  images: string[];        // multiple images per project
   githubUrl?: string | null;
   liveUrl?: string | null;
-  imageUrl?: string | null;
   featured: boolean;
   order: number;
   createdAt: Date;
@@ -25,10 +31,10 @@ export interface Project {
 export interface ProjectFormData {
   title: string;
   description: string;
-  techStack: string;   // comma-separated string from input, split before saving
+  techStack: string;    // comma-separated string, split before saving
+  images: string[];     // array of image URLs
   githubUrl: string;
   liveUrl: string;
-  imageUrl: string;
   featured: boolean;
 }
 

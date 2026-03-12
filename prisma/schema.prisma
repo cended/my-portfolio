@@ -12,9 +12,9 @@ model Project {
   title       String
   description String
   techStack   String[]
+  images      String[]
   githubUrl   String?
   liveUrl     String?
-  imageUrl    String?
   featured    Boolean  @default(false)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
