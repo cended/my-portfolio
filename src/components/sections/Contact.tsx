@@ -13,14 +13,14 @@ const CONTACT_LINKS = [
   {
     icon: Github,
     label: "GitHub",
-    value: "github.com/alcedmadiales",    // ✏️ Update with your real GitHub
-    href: "https://github.com",
+    value: "github.com/cended",    // ✏️ Update with your real GitHub
+    href: "https://github.com/cended",
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "linkedin.com/in/alcedmadiales", // ✏️ Update with your real LinkedIn
-    href: "https://linkedin.com",
+    value: "linkedin.com/in/alced-jhon-madiales", // ✏️ Update with your real LinkedIn
+    href: "https://linkedin.com/in/alced-jhon-madiales",
   },
   {
     icon: MapPin,
