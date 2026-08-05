@@ -1,52 +1,35 @@
 // src/components/layout/Navbar.tsx
-// Sticky navigation bar with smooth scroll links.
-//
-// "use client" is needed because we use useState (for mobile menu)
-// and addEventListener (for scroll detection) — browser-only features.
+// Floating pill-style navbar, inset from the viewport edges.
+// Always shows its own background — no more scroll-triggered
+// transparent/opaque toggle, which is what made nav text hard to
+// read over the cream Hero before.
 
 "use client";
 
-import { useState, useEffect } from "react";
-import { Menu, X, Code2 } from "lucide-react";
+import { useState } from "react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/types";
 
 const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
+  { label: "Services", href: "#services" },
+  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);       // mobile menu state
-  const [scrolled, setScrolled] = useState(false);   // scroll detection
-
-  // Add background blur when user scrolls down
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // cleanup
-  }, []);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-dark-950/80 backdrop-blur-md border-b border-white/5 py-3"
-          : "bg-transparent py-5"
-      )}
-    >
-      <nav className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+    <header className="fixed top-4 inset-x-4 md:top-6 md:inset-x-6 z-50">
+      <nav className="max-w-7xl mx-auto flex items-center justify-between gap-4 px-5 md:px-8 py-3 rounded-full border border-[var(--cream-deep)] bg-[var(--cream)]/90 backdrop-blur-md shadow-sm">
+
         {/* Logo */}
-        <a
-          href="#home"
-          className="flex items-center gap-2 font-display font-bold text-lg text-white hover:text-blue-400 transition-colors"
-        >
-          <Code2 size={22} className="text-blue-400" />
-          <span>AJM</span>
+        <a href="#home" className="flex items-center shrink-0 transition-opacity hover:opacity-80">
+          <img src="/images/logo.png" alt="AJM logo" className="h-8 md:h-9 w-auto" />
         </a>
 
         {/* Desktop nav links */}
@@ -55,7 +38,7 @@ export default function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200 font-body"
+                className="px-4 py-2 text-sm font-medium text-[var(--navy-muted)] hover:text-[var(--navy)] hover:bg-[var(--navy)]/5 rounded-full transition-all duration-200"
               >
                 {link.label}
               </a>
@@ -66,31 +49,32 @@ export default function Navbar() {
         {/* CTA button — desktop */}
         <a
           href="mailto:madialesalced@gmail.com"
-          className="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition-colors duration-200"
+          className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--navy)] hover:bg-[var(--navy-soft)] text-[var(--cream)] text-sm font-medium transition-all duration-200 shrink-0"
         >
-          Hire Me
+          Contact Me
+          <ArrowRight size={15} />
         </a>
 
         {/* Mobile menu toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+          className="md:hidden p-2 text-[var(--navy)] hover:opacity-70 transition-opacity"
           aria-label="Toggle menu"
         >
-          {isOpen ? <X size={22} /> : <Menu size={22} />}
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile dropdown */}
       {isOpen && (
-        <div className="md:hidden bg-dark-900/95 backdrop-blur-md border-b border-white/5">
-          <ul className="px-6 py-4 flex flex-col gap-1">
+        <div className="md:hidden mt-2 rounded-2xl border border-[var(--cream-deep)] bg-[var(--cream)]/95 backdrop-blur-md shadow-lg overflow-hidden">
+          <ul className="px-4 py-3 flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                  className="block px-4 py-3 text-[var(--navy)] hover:bg-[var(--navy)]/5 rounded-xl transition-all"
                 >
                   {link.label}
                 </a>
@@ -99,9 +83,13 @@ export default function Navbar() {
             <li className="pt-2">
               <a
                 href="mailto:madialesalced@gmail.com"
-                className="block text-center px-4 py-3 bg-blue-600 text-white rounded-lg"
+                className={cn(
+                  "flex items-center justify-center gap-2 px-4 py-3",
+                  "bg-[var(--navy)] text-[var(--cream)] rounded-xl font-medium"
+                )}
               >
-                Hire Me
+                Contact Me
+                <ArrowRight size={15} />
               </a>
             </li>
           </ul>

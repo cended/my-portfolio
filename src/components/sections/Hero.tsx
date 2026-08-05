@@ -1,18 +1,18 @@
 // src/components/sections/Hero.tsx
+//
+// PHOTO: already wired to /images/portrait.png — no change needed.
+
 "use client";
 
 import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, ArrowDown, ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Hero() {
   const [visible, setVisible] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 100);
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", onScroll);
-    return () => { clearTimeout(t); window.removeEventListener("scroll", onScroll); };
+    return () => clearTimeout(t);
   }, []);
 
   const fade = (delay: string) => ({
@@ -22,87 +22,113 @@ export default function Hero() {
   });
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark-950">
+    <div className="relative min-h-screen overflow-hidden bg-[var(--cream)]">
 
-      {/* Background grid */}
+      {/* Dot-grid texture, top right */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute top-20 right-16 w-40 h-40 opacity-40 pointer-events-none hidden lg:block"
         style={{
-          backgroundImage: `linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(59,130,246,0.5) 1px, transparent 1px)`,
-          backgroundSize: "50px 50px",
+          backgroundImage: "radial-gradient(circle, var(--gold) 1px, transparent 1px)",
+          backgroundSize: "14px 14px",
         }}
       />
 
-      {/* Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-36 md:pt-44 pb-20 grid lg:grid-cols-2 gap-16 items-start min-h-screen">
 
-      {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        {/* Left — text content */}
+        <div>
+          {/* Eyebrow */}
+          <p
+            style={fade("0s")}
+            className="font-mono text-xs md:text-sm tracking-[0.2em] uppercase mb-6 text-[var(--gold-dark)]"
+          >
+            Full Stack Developer &nbsp;•&nbsp; AI Automation Specialist
+          </p>
 
-        {/* Status badge */}
-        <div style={fade("0s")} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-mono mb-8">
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          Available for opportunities
+          {/* Headline — short, punchy, navy only */}
+          <h1
+            style={fade("0.1s")}
+            className="font-serif-display font-bold text-4xl md:text-5xl leading-[1.15] mb-4 text-[var(--navy)]"
+          >
+            AI Automation Specialist with
+            Web Development Foundation
+          </h1>
+
+          {/* Subheadline — separate element, its own smaller size, gold accent */}
+          <p
+            style={fade("0.18s")}
+            className="font-serif-display font-semibold text-lg md:text-xl leading-snug mb-6 text-[var(--gold)]"
+          >
+            I build automations that save time, eliminate repetitive work, and
+            help businesses grow.
+          </p>
+
+          {/* Decorative divider */}
+          <svg style={fade("0.25s")} width="120" height="16" viewBox="0 0 120 16" fill="none" className="mb-6">
+            <path
+              d="M2 8 Q 20 -2, 40 8 T 80 8 T 118 8"
+              stroke="var(--gold)"
+              strokeWidth="1.5"
+              fill="none"
+            />
+          </svg>
+
+          {/* Description */}
+          <p
+            style={fade("0.32s")}
+            className="text-base md:text-lg max-w-lg mb-10 leading-relaxed text-[var(--text-muted)]"
+          >
+            I design and build intelligent automation workflows, AI-powered
+            systems, and modern web applications that streamline operations
+            and drive real results.
+          </p>
+
+          {/* CTAs */}
+          <div style={fade("0.4s")} className="flex flex-wrap items-center gap-4">
+            <a
+              href="#projects"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg font-medium text-sm bg-[var(--navy)] text-[var(--cream)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2"
+            >
+              View My Work
+              <ArrowUpRight size={16} />
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg font-medium text-sm border border-[var(--navy)] text-[var(--navy)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--navy)] hover:text-[var(--cream)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2"
+            >
+              Let&apos;s Work Together
+              <ArrowUpRight size={16} />
+            </a>
+          </div>
         </div>
 
-        {/* Greeting + Name — single line */}
-        <h1 style={fade("0.15s")} className="font-mono font-bold text-4xl md:text-5xl text-white tracking-tight mb-6">
-          Hi, I&apos;m <span className="text-gradient">Alced</span>
-        </h1>
+        {/* Right — photo */}
+        <div
+          style={fade("0.2s")}
+          className="relative flex justify-center lg:justify-end lg:-mt-14"
+        >
+          <div className="relative w-full max-w-md aspect-[4/5]">
 
-        {/* Role */}
-        <p style={fade("0.45s")} className="font-display text-xl md:text-2xl text-slate-400 font-medium mb-4">
-          Full Stack Web Developer
-        </p>
+            {/* Soft circle — centered on THIS box specifically via flexbox,
+                so it always tracks the photo even if the headline column
+                changes height or width. */}
+            <div className="absolute inset-0 hidden lg:flex items-center justify-center pointer-events-none">
+              <div className="w-[440px] h-[440px] rounded-full bg-[var(--cream-deep)]" />
+            </div>
 
-        {/* Bio */}
-        <p style={fade("0.55s")} className="text-slate-500 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-          BS Information Technology student at{" "}
-          <span className="text-slate-300">WMSU</span>, building functional and
-          user-friendly web applications with modern tools.
-          Based in <span className="text-slate-300">Zamboanga City, PH</span>.
-        </p>
-
-        {/* CTAs */}
-        <div style={fade("0.65s")} className="flex flex-wrap items-center justify-center gap-4 mb-12">
-          <a href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5">
-            View My Work
-            <ExternalLink size={16} />
-          </a>
-          <a href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 glass text-slate-300 hover:text-white font-medium rounded-xl transition-all duration-200 hover:-translate-y-0.5">
-            Get In Touch
-            <Mail size={16} />
-          </a>
+            <div className="relative w-full h-full overflow-hidden z-10">
+              <img
+                src="/images/portrait.png"
+                alt="Alced Jhon Madiales"
+                className="w-full h-full object-contain object-bottom"
+                style={{
+                  maskImage: "linear-gradient(to bottom, black 90%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 90%, transparent 100%)",
+                }}
+              />
+            </div>
+          </div>
         </div>
-
-        {/* Socials */}
-        <div style={fade("0.75s")} className="flex items-center justify-center gap-4">
-          <a href="https://github.com/cended" target="_blank" rel="noopener noreferrer"
-            className="p-3 glass rounded-xl text-slate-400 hover:text-white hover:border-white/20 transition-all duration-200 hover:-translate-y-0.5" aria-label="GitHub">
-            <Github size={20} />
-          </a>
-          <a href="https://linkedin.com/in/alced-jhon-madiales" target="_blank" rel="noopener noreferrer"
-            className="p-3 glass rounded-xl text-slate-400 hover:text-white hover:border-white/20 transition-all duration-200 hover:-translate-y-0.5" aria-label="LinkedIn">
-            <Linkedin size={20} />
-          </a>
-          <a href="mailto:madialesalced@gmail.com"
-            className="p-3 glass rounded-xl text-slate-400 hover:text-white hover:border-white/20 transition-all duration-200 hover:-translate-y-0.5" aria-label="Email">
-            <Mail size={20} />
-          </a>
-        </div>
-      </div>
-
-      {/* Scroll indicator — fades out on scroll */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 animate-bounce z-10 transition-opacity duration-500"
-        style={{ opacity: scrolled ? 0 : 1, pointerEvents: "none" }}
-      >
-        <ArrowDown size={18} />
-        <span className="text-xs font-mono tracking-widest">scroll</span>
       </div>
     </div>
   );

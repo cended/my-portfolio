@@ -9,6 +9,22 @@
     scroll-behavior: smooth;
   }
 
+  :root {
+    /* Premium light theme — used by redesigned sections (Hero onward).
+       Reuse these across every new section for a consistent palette. */
+    --cream: #f5f0e6;
+    --cream-deep: #efe6d3;
+    --navy: #16233a;
+    --navy-soft: #3a4a63;
+    --gold: #c9a876;
+    --gold-dark: #b8935f;
+    --text-muted: #5c5c5c;
+    --navy-muted: #606a78; /* navy blended ~65% over cream, computed directly
+                               to avoid text-[var(--navy)]/65 — Tailwind's
+                               opacity-slash modifier doesn't reliably compile
+                               against hex-format CSS variables. */
+  }
+
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -21,6 +37,17 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #3b82f6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -46,5 +73,9 @@
     .section-padding {
       padding: 5rem 3rem;
     }
+  }
+
+  .font-serif-display {
+    font-family: "Playfair Display", Georgia, serif;
   }
 }
