@@ -201,16 +201,22 @@ export default function WebProjectCard({ project }: WebProjectCardProps) {
                   {project.description}
                 </p>
 
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--navy)] text-[var(--cream)] text-sm font-medium hover:bg-[var(--navy-soft)] transition-all"
-                >
-                  View Live Site
-                  <ExternalLink size={15} />
-                </a>
+                {project.liveUrl ? (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--navy)] text-[var(--cream)] text-sm font-medium hover:bg-[var(--navy-soft)] transition-all"
+                  >
+                    View Live Site
+                    <ExternalLink size={15} />
+                  </a>
+                ) : (
+                  <p className="text-sm font-mono text-[var(--text-muted)] italic">
+                    Internal system — not publicly deployed
+                  </p>
+                )}
               </div>
             </div>
           </div>

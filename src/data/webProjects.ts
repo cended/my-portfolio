@@ -12,7 +12,7 @@ export interface WebProject {
   description: string;
   techStack: string[];
   images: string[];
-  liveUrl: string;
+  liveUrl?: string;
 }
 
 export const WEB_PROJECTS: WebProject[] = [
@@ -55,5 +55,19 @@ export const WEB_PROJECTS: WebProject[] = [
     techStack: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "NextAuth", "Tailwind CSS", "React", "Vercel", "Supabase"],
     images: ["/images/webprojects/personal-portfolio-1.png"],
     liveUrl: "https://my-portfolio-mu-blue-32.vercel.app/",
+  },
+  {
+    slug: "records-archives-system",
+    title: "Records and Archives System — WMSU Records Office",
+    description:
+      "The Records and Archives System is a web-based platform built for WMSU's Records Office to manage the university's institutional records — from active inventory tracking through to permanent archival storage. As backend developer, I built the core system logic in PHP and MySQL, including role-based authentication across four distinct user types and a dashboard giving staff a live overview of their holdings (total records, temporary vs. permanent, pending disposal, and trash).\n\nThe system automates document numbering, handles file uploads with transactional rollback safeguards to prevent partial or corrupted saves, and enforces an automated retention-based soft-delete policy so records age out on schedule instead of being tracked by hand. A dedicated reporting module generates chart-based analytics with Excel and PDF export, giving the office visibility into their records at a glance.",
+    techStack: ["PHP", "MySQL"],
+    images: [
+      "/images/webprojects/records-archives-1.png",
+      "/images/webprojects/records-archives-2.png",
+      "/images/webprojects/records-archives-3.png",
+    ],
+    // No liveUrl — internal WMSU system, not publicly deployed. Card and
+    // modal both handle this gracefully (no dead "View Live Site" button).
   },
 ];
