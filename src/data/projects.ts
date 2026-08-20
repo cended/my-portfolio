@@ -121,6 +121,107 @@ export const PROJECTS: AutomationProject[] = [
     image: "/images/projects/ai-content-repurposing.png",
   },
   {
+    slug: "automated-lead-enrichment",
+    title: "Automated Lead Enrichment & Scoring Pipeline",
+    platform: "Zapier",
+    tag: "Sales Automation",
+    cardDescription:
+      "A Zapier system that takes a lead straight from a webform, enriches it with real company data via Apollo, scores and routes it by priority, logs it, alerts the sales team, and — as the bonus requirement — has AI draft and send a personalized outreach email for high-priority leads, with zero manual steps anywhere in the chain.",
+    briefDescription:
+      "A Zapier system that takes a lead straight from a webform, enriches it with real company data via Apollo, scores and routes it by priority, logs it, alerts the sales team, and — as the bonus requirement — has AI draft and send a personalized outreach email for high-priority leads, with zero manual steps anywhere in the chain.",
+    businessProblem:
+      "Sales teams working leads straight off a form submission are working blind — a name, an email, and a company name tell you almost nothing about whether that lead is actually worth chasing first. Someone has to manually look up the company, judge its size and legitimacy, decide how urgent it is relative to everything else that came in that day, log it somewhere, and only then loop in the right person. If it's a genuinely hot lead, every minute lost to that manual triage is a minute a faster-moving competitor could use to get there first. This was the exact scenario a consulting firm handed me as a technical assessment: take a real-time webhook lead and get the entire enrichment-to-outreach chain running automatically, with no human touching it in between.",
+    solution:
+      "I built a Zapier system triggered the moment a new lead comes in through a form (Youform), carrying the standard lead fields — name, email, company, company size, website, and how they found us. Before enrichment can run, a Formatter step cleans the raw company website field into the plain domain format Apollo's API actually expects, since a messy or inconsistently formatted URL would silently break the lookup. That clean domain feeds into the enrichment step itself, built as a direct API call to Apollo (via Zapier's generic Webhooks action, since a raw HTTP call gave more control over exactly which company fields came back than a pre-built connector would have). With enriched company data in hand, Zapier's Paths feature splits the lead into two branches based on company size and the other prioritization signals Apollo returned. High-priority leads get the full treatment: logged permanently to a Google Sheet, an immediate Slack ping to the sales team, and — this is the bonus requirement from the brief — AI drafts a personalized outreach email using the lead's actual details and enrichment context, which then gets sent straight to the client via Gmail, closing the loop instead of just leaving a draft sitting unsent. Lower-priority leads skip all of that heavier automation and instead trigger a simpler email notification to the sales team, so the AI drafting, Slack alerts, and permanent logging stay reserved for the leads that are actually worth that level of attention.",
+    workflowSteps: [
+      { title: "Form Trigger (Lead Comes In)", description: "Fires in real time the moment a new lead submits the form, carrying name, email, company, company size, website, and lead source." },
+      { title: "Company URL Formatting", description: "Cleans the raw website field into the plain domain format the enrichment API expects, so inconsistent URLs don't silently break the next step." },
+      { title: "Lead Enrichment (Apollo)", description: "Calls Apollo's API directly to pull real company data — size, industry, and other firmographic details — well beyond what the lead submitted on the form." },
+      { title: "Priority Split", description: "Routes the enriched lead down a High Priority or Low Priority path based on company size and the other signals Apollo returned." },
+      { title: "High Priority — Log the Lead", description: "Saves the lead permanently to a Google Sheet, creating a durable record for the sales team to reference." },
+      { title: "High Priority — Slack Alert", description: "Notifies the sales team immediately in Slack so a hot lead gets human eyes on it right away." },
+      { title: "High Priority — AI Email Draft", description: "AI writes a personalized outreach email using the lead's actual details and enrichment context — not a generic template." },
+      { title: "High Priority — Send to Client", description: "The AI-drafted email sends automatically via Gmail, so outreach goes out the moment the lead is qualified rather than waiting on someone to review a draft first." },
+      { title: "Low Priority — Sales Team Notification", description: "Sends a lighter-weight email notification to the sales team instead of the full high-priority sequence, so lower-value leads still get seen without burning the same automation budget as a hot one." },
+    ],
+    image: "/images/projects/automated-lead-enrichment.png",
+  },
+  {
+    slug: "facebook-messenger-ai-agent",
+    title: "AI Customer Support Agent for Facebook Messenger",
+    platform: "n8n",
+    tag: "Support AI",
+    cardDescription:
+      "Customers message a Facebook Page and get instant, accurate answers pulled from a live knowledge base — no invented prices, no missed messages.",
+    briefDescription:
+      "An n8n agent connected directly to a Facebook Page's Messenger inbox. When a customer sends a message, it pulls the business's live knowledge base from a Google Doc, has an AI agent answer strictly from that content — no guessing, no invented prices or policies — and sends the reply back to the customer on Messenger automatically, in real time.",
+    businessProblem:
+      "Every Facebook Page gets the same handful of questions over and over — hours, pricing, shipping, refund steps, \"do you carry X.\" Someone has to answer them, and Messenger response speed directly affects whether a lead converts or moves on to a competitor. Hiring someone to sit on the inbox all day is expensive for what's mostly repetitive work, and a generic button-based chatbot can't handle a real question typed in plain language. The bigger risk with an AI chatbot specifically is confident wrong answers — a bot that invents a price or a policy it was never told about can do more damage to a business than no bot at all.",
+    solution:
+      "I built an n8n workflow that hooks directly into a Facebook Page's Messenger webhook, handling Facebook's required verification handshake so the page can be connected in the first place. Once live, it filters out everything that isn't an actual customer message — read receipts, delivery confirmations, and other webhook noise never reach the AI. For every genuine message, the workflow pulls the current content of a Google Doc that acts as the business's knowledge base, so the owner can update hours, pricing, or policies at any time without touching the automation itself. An AI agent then answers the customer's exact question using only what's written in that document, under a strict rule set: never fabricate a price, policy, or promise, preserve names/links/numbers exactly as written, present instructions as numbered steps, ask a clarifying question if the inquiry is vague, and fall back to a polite \"please contact support\" message rather than guess when the answer isn't in the knowledge base. The agent also holds short-term conversation memory so it can follow a natural back-and-forth instead of treating every message as a cold start. The finished reply is posted straight back into the same Messenger thread via the Facebook Graph API.",
+    workflowSteps: [
+      { title: "Facebook Messenger Webhook", description: "Single endpoint that receives every event Facebook sends for the connected Page — both the one-time verification request and every live customer message going forward." },
+      { title: "Webhook Verification Handshake", description: "Checks incoming requests against Facebook's required verify token and echoes back the challenge value, which is how Facebook authorizes the endpoint before sending real traffic." },
+      { title: "Message Filter", description: "Drops any event that isn't an actual text message — read receipts, delivery confirmations, etc. — so the AI only ever fires on genuine customer inquiries." },
+      { title: "Live Knowledge Base Fetch", description: "Pulls the current content of a Google Doc acting as the single source of truth for business info — edit the doc and answers update instantly, no redeploy needed." },
+      { title: "AI Support Agent", description: "Answers strictly from the knowledge base under a detailed rule set: no fabrication, exact preservation of prices/names/links, numbered steps for instructions, a clarifying question when unclear, and a safe fallback when the answer isn't found." },
+      { title: "Conversation Memory", description: "Keeps short-term context of the exchange so the agent can handle natural follow-up questions instead of treating each message in isolation." },
+      { title: "Send Reply to Messenger", description: "Posts the AI's finished answer back to the customer through the Facebook Graph API, landing in the same Messenger thread they messaged from." },
+    ],
+    image: "/images/projects/facebook-messenger-ai-agent.png",
+  },
+  {
+    slug: "voice-ai-appointment-setter",
+    title: "AI Appointment Setter (Voice AI Receptionist)",
+    platform: "n8n",
+    tag: "Voice AI",
+    cardDescription:
+      "Callers talk to an AI voice receptionist that checks real calendar availability live and books, reschedules, or cancels the appointment mid-call.",
+    briefDescription:
+      "A voice AI receptionist, built on Vapi and orchestrated through n8n, that answers real phone calls for a business and handles the entire appointment lifecycle live, mid-conversation — checking calendar availability, booking, rescheduling, and canceling — then automatically logs the call recording, transcript, and AI-generated summary once the call ends.",
+    businessProblem:
+      "For service businesses, the phone is where revenue starts, and every call that goes to voicemail is a coin-flip on whether that customer calls back or just calls the next business on the list. But answering live isn't the hard part — actually doing something with the call is: checking real calendar availability, finding an alternative if the requested time is taken, creating the booking correctly, handling the inevitable \"actually, can we move it\" or \"I need to cancel\" calls, and keeping a record of all of it. That's a full receptionist's job, and it needs to be available whenever the phone rings, including evenings and weekends. Staffing that live is expensive — and a basic voicemail or phone tree doesn't solve the actual problem, since nothing gets booked without a human closing the loop afterward.",
+    solution:
+      "I built a voice AI receptionist where Vapi handles the live phone conversation itself — speech-to-text, conversational reasoning, text-to-speech — and calls out to n8n mid-call, through five dedicated webhook \"tools,\" whenever it needs to take a real action. Each tool validates that the caller actually provided the required information before doing anything, and returns a structured response that Vapi speaks straight back to the caller, so an incomplete request gets a clarifying follow-up instead of a broken booking. Checking availability queries Google Calendar for the requested slot, and if it's taken, computes the real open 30-minute slots for the business day so the assistant can offer real alternatives on the spot. Booking converts the requested time to the business's timezone, creates the Google Calendar event with a Google Meet link and the caller auto-added as an attendee, and logs the confirmed appointment to Airtable. Rescheduling and canceling both look up the caller's existing appointment by phone number and update or delete the corresponding calendar event accordingly. A separate post-call webhook fires after every call, capturing the full transcript, recording URL, AI-generated summary, and cost, and logs it to Airtable — so every conversation is reviewable afterward even if no booking happened.",
+    workflowSteps: [
+      { title: "Vapi Tool-Call Webhooks", description: "Four dedicated webhooks (Get Slots, Book Slots, Update Slots, Cancel Slots) each receive a live \"tool call\" from the Vapi voice assistant mid-conversation." },
+      { title: "Argument Extraction & Validation", description: "Unpacks Vapi's tool-call payload into usable fields and confirms all required fields are present — an incomplete request gets a spoken clarifying error instead of proceeding." },
+      { title: "Availability Check", description: "Queries Google Calendar for the requested window; if unavailable, calculates real open 30-minute slots for the business day, formatted for the assistant to read aloud." },
+      { title: "Booking", description: "Converts the requested time to the business's timezone, creates the Google Calendar event with an auto-generated Meet link, and logs the confirmed booking to Airtable." },
+      { title: "Rescheduling", description: "Looks up the caller's existing appointment by phone number, updates the matching calendar event, and syncs the change back to Airtable." },
+      { title: "Cancellation", description: "Same phone-number lookup, deletes the calendar event with attendee notifications sent, and marks the Airtable record \"Canceled\" — preserving history instead of erasing it." },
+      { title: "Structured Tool Response", description: "Every branch replies in the exact JSON shape Vapi expects, which is what the voice AI actually speaks to the caller in real time." },
+      { title: "Post-Call Logging", description: "A separate webhook fires once the call ends, capturing the full transcript, recording URL, AI-generated summary, and cost, and logs it to Airtable, keyed by call ID." },
+    ],
+    image: "/images/projects/voice-ai-appointment-setter.png",
+  },
+  {
+    slug: "asmr-video-creator",
+    title: "Automated YouTube Shorts & Facebook Reels Creator",
+    platform: "n8n",
+    tag: "Video AI",
+    cardDescription:
+      "One schedule trigger writes, renders, and publishes a brand-new AI-generated ASMR video to YouTube and Facebook — fully unattended.",
+    briefDescription:
+      "A fully autonomous n8n pipeline that generates, renders, and publishes a brand-new hyper-realistic \"glass fruit slicing\" ASMR video on a schedule — from AI-written concept to a finished video live on both YouTube and Facebook — with zero manual steps in between.",
+    businessProblem:
+      "Short-form ASMR and satisfying-content channels are a proven, high-engagement niche on YouTube Shorts and Facebook Reels, but growing one demands relentless, consistent posting with fresh, on-brand variety every time. Manually dreaming up a new concept, writing a prompt for an AI video generator, waiting for the render, downloading the result, writing a title and caption, then uploading separately to each platform turns into a full production job on its own for a solo creator. Compounding that, AI video generation APIs are asynchronous and unpredictable: jobs run long, content can get flagged by safety filters, and requests occasionally just fail. A pipeline meant to run unattended has to handle all of that gracefully instead of silently stalling or producing nothing.",
+    solution:
+      "I built an n8n workflow that runs on a schedule and produces a complete, published video with no manual intervention at any step. An AI prompt-writer chain kicks things off by picking a random fruit — never repeating the last one — and generating a full content package in a single structured output: a click-worthy title, a caption with hashtags, and a tightly-specified cinematic video prompt that locks in a consistent style. Since n8n has no built-in credential type for Vertex AI's video model, I built a custom Google service-account OAuth flow from scratch — constructing the JWT claims, signing them, and exchanging the signed JWT for a short-lived access token — purely to authenticate against this one endpoint. That token drives a request to Vertex AI's Veo video model, which kicks off a long-running render job the workflow polls every 30 seconds until it's done. Rather than just failing on the two realistic failure modes of a generative video API, the workflow self-heals: if Google's content-safety filter flags the output, it loops back to generate an entirely new fruit and prompt and tries again; if the API throws a generic error, it retries the same generation request. Once a clean video comes back, it's converted into an actual video file and published simultaneously to YouTube and Facebook.",
+    workflowSteps: [
+      { title: "Schedule Trigger", description: "Fires on a recurring interval to start a fresh generation cycle with no manual kickoff needed." },
+      { title: "AI Concept Generation", description: "An AI chain picks a random, non-repeating fruit and returns a structured package: a click-worthy title, a caption with hashtags, and a precise cinematic video prompt." },
+      { title: "Custom Service-Account Authentication", description: "Builds the service-account claims, signs a JWT, and exchanges it for a short-lived Google OAuth access token — a from-scratch auth flow built to reach Vertex AI's video endpoint." },
+      { title: "Video Generation Request", description: "Sends the AI-written prompt to Vertex AI's Veo model, requesting a vertical, audio-enabled clip with UI and captions explicitly excluded from the frame." },
+      { title: "Async Polling Loop", description: "Waits and checks the render job's status repeatedly, since video generation runs as a long asynchronous job rather than an instant response." },
+      { title: "Content-Safety Self-Healing", description: "If Google's content filter flags the result, the workflow loops back to the AI concept step, generates a fresh fruit and prompt, and attempts the render again automatically." },
+      { title: "Error Retry", description: "If the API returns a generic error, the workflow retries the same generation request rather than failing the entire run." },
+      { title: "Convert to File", description: "Once a clean video comes back, its base64-encoded bytes are converted into an actual binary video file n8n can upload." },
+      { title: "Dual-Platform Publishing", description: "The finished video uploads simultaneously to YouTube and Facebook, each with the AI-generated title, description, and caption." },
+    ],
+    image: "/images/projects/asmr-video-creator.png",
+  },
+  {
     slug: "job-scraper-resume-optimizer",
     title: "AI Job Scraper + Resume Optimizer",
     platform: "n8n",
